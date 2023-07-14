@@ -29,8 +29,8 @@ jobs:
 
       - name: Create build folders
         run: |
-          mkdir -p build-folders/client/dist
-          mkdir -p build-folders/server/dist
+          mkdir -p build-folders/client
+          mkdir -p build-folders/server
 
       - name: Copy build folders
         run: |
@@ -144,6 +144,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      
+      - name: Download the build folders
+        uses: actions/download-artifact@v2
+        with:
+          name: build-folders
+          path: build-folders
 
       - name: "Testing in Chrome"
         uses: cypress-io/github-action@v5
@@ -165,6 +171,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      
+      - name: Download the build folders
+        uses: actions/download-artifact@v2
+        with:
+          name: build-folders
+          path: build-folders
 
       - name: "Testing in Firefox"
         uses: cypress-io/github-action@v5
@@ -186,6 +198,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      
+      - name: Download the build folders
+        uses: actions/download-artifact@v2
+        with:
+          name: build-folders
+          path: build-folders
 
       - name: "Testing in Edge"
         uses: cypress-io/github-action@v5
@@ -207,6 +225,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      
+      - name: Download the build folders
+        uses: actions/download-artifact@v2
+        with:
+          name: build-folders
+          path: build-folders
 
       - name: Install Playwright dependencies for WebKit
         run: npx playwright install-deps webkit
