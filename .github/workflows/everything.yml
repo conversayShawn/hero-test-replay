@@ -50,6 +50,9 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build-folders
+          path: |
+            client/dist
+            server/dist
 
       - name: Run E2E Tests
         uses: cypress-io/github-action@v5
@@ -73,6 +76,9 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build-folders
+          path: |
+            client/dist
+            server/dist
 
       - name: Run CT Tests
         uses: cypress-io/github-action@v5
@@ -94,6 +100,9 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build-folders
+          path: |
+            client/dist
+            server/dist
 
       - name: Run API Tests
         uses: cypress-io/github-action@v5
