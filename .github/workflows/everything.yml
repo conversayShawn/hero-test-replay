@@ -1,0 +1,190 @@
+name: Cypress Tests
+
+on: push
+
+env:
+  VITE_API_URL: http://localhost:3001
+  CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  DEBUG: "cypress:*"
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Cypress install
+        uses: cypress-io/github-action@v5
+        with:
+          runTests: false
+
+  end-to-end-tests:
+    runs-on: ubuntu-latest
+    needs: install
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1, 2]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Download the build folders
+        uses: actions/download-artifact@v3
+        with:
+          name: build-folders
+      - name: Run E2E Tests
+        uses: cypress-io/github-action@v5
+        with:
+          start: npm run start:ci
+          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+          command: npm run test:e2e:ci
+
+  component-tests:
+    runs-on: ubuntu-latest
+    needs: install
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1, 2]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Download the build folders
+        uses: actions/download-artifact@v3
+        with:
+          name: build-folders
+      - name: Run CT Tests
+        uses: cypress-io/github-action@v5
+        with:
+          command: npm run test:ct:ci
+
+  api-tests:
+    runs-on: ubuntu-latest
+    needs: install
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1, 2]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Download the build folders
+        uses: actions/download-artifact@v3
+        with:
+          name: build-folders
+      - name: Run API Tests
+        uses: cypress-io/github-action@v5
+        with:
+          start: npm run start:ci
+          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+          command: npm run test:api:ci
+
+  electron-browser:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    needs: [end-to-end-tests]
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1, 2]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: "Testing in Electron"
+        uses: cypress-io/github-action@v5
+        with:
+          build: npx cypress info
+          record: true
+          parallel: true
+          group: "Electron"
+
+  chrome-browser:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    needs: [end-to-end-tests]
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1, 2]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: "Testing in Chrome"
+        uses: cypress-io/github-action@v5
+        with:
+          build: npx cypress info
+          browser: chrome
+          record: true
+          parallel: true
+          group: "Chrome"
+
+  firefox-browser:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    needs: [end-to-end-tests]
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1, 2]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: "Testing in Firefox"
+        uses: cypress-io/github-action@v5
+        with:
+          build: npx cypress info
+          browser: firefox
+          record: true
+          parallel: true
+          group: "Firefox"
+
+  edge-browser:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    needs: [end-to-end-tests]
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1, 2]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: "Testing in Edge"
+        uses: cypress-io/github-action@v5
+        with:
+          build: npx cypress info
+          browser: edge
+          record: true
+          parallel: true
+          group: "Edge"
+
+  webkit-browser:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    needs: [end-to-end-tests]
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1, 2]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Playwright dependencies for WebKit
+        run: npx playwright install-deps webkit
+
+      - name: "Testing in WebKit"
+        uses: cypress-io/github-action@v5
+        with:
+          build: npx cypress info
+          browser: webkit
+          record: true
+          parallel: true
+          group: "WebKit"
+          config: "video=true,experimentalWebKitSupport=true"
