@@ -22,6 +22,15 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           runTests: false
+          build: npm run build
+      - name: Save build folder
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-folders
+          if-no-files-found: error
+          path: |
+            client/dist
+            server/dist
 
   end-to-end-tests:
     runs-on: ubuntu-latest
