@@ -19,14 +19,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/elylucas/cypress-heroes.git"
+    "url": "git+https://github.com/conversayShawn/hero-test-replay.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/elylucas/cypress-heroes/issues"
+    "url": "https://github.com/conversayShawn/hero-test-replay/issues"
   },
-  "homepage": "https://github.com/elylucas/cypress-heroes#readme",
+  "homepage": "https://github.com/conversayShawn/hero-test-replay#readme",
   "devDependencies": {
     "concurrently": "^7.6.0",
     "rimraf": "^4.1.0"
