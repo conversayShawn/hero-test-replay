@@ -27,11 +27,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Save build folders
+      - name: Create build folders
         run: |
-          mkdir build-folders
-          cp -R client/dist build-folders/
-          cp -R server/dist build-folders/
+          mkdir -p build-folders/client/dist
+          mkdir -p build-folders/server/dist
+
+      - name: Copy build folders
+        run: |
+          cp -R client/dist build-folders/client/
+          cp -R server/dist build-folders/server/
+
       - name: Archive build folders
         uses: actions/upload-artifact@v2
         with:
