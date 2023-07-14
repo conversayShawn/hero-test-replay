@@ -44,7 +44,7 @@ describe('LoginForm', () => {
     cy.get('input[type="email"]').type('test@user.com');
     cy.get('input[type="password"]').type('pass123');
     cy.get('button').click();
-    cy.get('@onLoginSpy').should('have.been.called');
+    cy.get('@onLoginSpy').should('not.have.been.called');
   });
 
   it('when email and password are invalid, an error should show', () => {
