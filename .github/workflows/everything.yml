@@ -20,9 +20,24 @@ jobs:
         with:
           runTests: false
 
-  end-to-end-tests:
+  save-build-folders:
     runs-on: ubuntu-latest
     needs: install
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Save build folders
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-folders
+          path: |
+            client/dist
+            server/dist
+
+  end-to-end-tests:
+    runs-on: ubuntu-latest
+    needs: [install, save-build-folders]
     strategy:
       fail-fast: false
       matrix:
@@ -30,10 +45,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Download the build folders
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2
         with:
           name: build-folders
+
       - name: Run E2E Tests
         uses: cypress-io/github-action@v5
         with:
@@ -43,7 +60,7 @@ jobs:
 
   component-tests:
     runs-on: ubuntu-latest
-    needs: install
+    needs: [install, save-build-folders]
     strategy:
       fail-fast: false
       matrix:
@@ -51,10 +68,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Download the build folders
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2
         with:
           name: build-folders
+
       - name: Run CT Tests
         uses: cypress-io/github-action@v5
         with:
@@ -62,7 +81,7 @@ jobs:
 
   api-tests:
     runs-on: ubuntu-latest
-    needs: install
+    needs: [install, save-build-folders]
     strategy:
       fail-fast: false
       matrix:
@@ -70,10 +89,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Download the build folders
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2
         with:
           name: build-folders
+
       - name: Run API Tests
         uses: cypress-io/github-action@v5
         with:
