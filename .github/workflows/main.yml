@@ -54,7 +54,7 @@ jobs:
         with:
           start: npm run start:ci
           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          command: npm run test:e2e:ci
+          command: npm run test:e2e:ci --browser ${{ matrix.browser }}
           browser: ${{ matrix.browser }}
 
   component-tests:
@@ -77,7 +77,7 @@ jobs:
       - name: Run Component Tests on ${{ matrix.browser }}
         uses: cypress-io/github-action@v5
         with:
-          command: npm run test:ct:ci
+          command: npm run test:ct:ci --browser ${{ matrix.browser }}
           browser: ${{ matrix.browser }}
 
   api-tests:
@@ -102,5 +102,5 @@ jobs:
         with:
           start: npm run start:ci
           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          command: npm run test:api:ci
+          command: npm run test:api:ci --browser ${{ matrix.browser }}
           browser: ${{ matrix.browser }}
