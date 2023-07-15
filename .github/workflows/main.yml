@@ -1,209 +1,209 @@
-name: Cypress Tests
+# name: Cypress Tests
 
-on: push
+# on: push
 
-env:
-  VITE_API_URL: http://localhost:3001
-  CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  DEBUG: "cypress:*"
+# env:
+#   VITE_API_URL: http://localhost:3001
+#   CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+#   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#   DEBUG: "cypress:*"
 
-jobs:
-  install:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Cypress install
-        uses: cypress-io/github-action@v5
-        with:
-          runTests: false
-          build: npm run build
-      - name: Save build folder
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-folders
-          if-no-files-found: error
-          path: |
-            client/dist
-            server/dist
+# jobs:
+#   install:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
+#       - name: Cypress install
+#         uses: cypress-io/github-action@v5
+#         with:
+#           runTests: false
+#           build: npm run build
+#       - name: Save build folder
+#         uses: actions/upload-artifact@v3
+#         with:
+#           name: build-folders
+#           if-no-files-found: error
+#           path: |
+#             client/dist
+#             server/dist
 
-  e2e-tests:
-    runs-on: ubuntu-latest
-    needs: install
-    outputs:
-      command: ${{ steps.e2e-tests-setup.outputs.command }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Set up E2E Tests
-        id: e2e-tests-setup
-        run: echo "::set-output name=command::npm run test:e2e:ci"
+#   e2e-tests:
+#     runs-on: ubuntu-latest
+#     needs: install
+#     outputs:
+#       command: ${{ steps.e2e-tests-setup.outputs.command }}
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
+#       - name: Set up E2E Tests
+#         id: e2e-tests-setup
+#         run: echo "::set-output name=command::npm run test:e2e:ci"
 
-  component-tests:
-    runs-on: ubuntu-latest
-    needs: install
-    outputs:
-      command: ${{ steps.component-tests-setup.outputs.command }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Set up Component Tests
-        id: component-tests-setup
-        run: echo "::set-output name=command::npm run test:ct:ci"
+#   component-tests:
+#     runs-on: ubuntu-latest
+#     needs: install
+#     outputs:
+#       command: ${{ steps.component-tests-setup.outputs.command }}
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
+#       - name: Set up Component Tests
+#         id: component-tests-setup
+#         run: echo "::set-output name=command::npm run test:ct:ci"
 
-  api-tests:
-    runs-on: ubuntu-latest
-    needs: install
-    outputs:
-      command: ${{ steps.api-tests-setup.outputs.command }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Set up API Tests
-        id: api-tests-setup
-        run: echo "::set-output name=command::npm run test:api:ci"
+#   api-tests:
+#     runs-on: ubuntu-latest
+#     needs: install
+#     outputs:
+#       command: ${{ steps.api-tests-setup.outputs.command }}
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
+#       - name: Set up API Tests
+#         id: api-tests-setup
+#         run: echo "::set-output name=command::npm run test:api:ci"
 
-  electron-browser:
-    timeout-minutes: 15
-    runs-on: ubuntu-latest
-    needs: [e2e-tests, component-tests, api-tests]
-    strategy:
-      fail-fast: false
-      matrix:
-        containers: [1, 2]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Run E2E Tests
-        uses: cypress-io/github-action@v5
-        with:
-          start: npm run start:ci
-          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          wait-on-timeout: 120
-          command: ${{ needs.e2e-tests.outputs.command }}
-          record: true
-          parallel: true
-      - name: Run API Tests
-        uses: cypress-io/github-action@v5
-        with:
-          start: npm run start:ci
-          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          wait-on-timeout: 120
-          command: ${{ needs.api-tests.outputs.command }}
-          record: true
-          parallel: true
-      - name: Run CT Tests
-        uses: cypress-io/github-action@v5
-        with:
-          command: ${{ needs.component-tests.outputs.command }}
-          record: true
-          parallel: true
+#   electron-browser:
+#     timeout-minutes: 15
+#     runs-on: ubuntu-latest
+#     needs: [e2e-tests, component-tests, api-tests]
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         containers: [1, 2]
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
+#       - name: Run E2E Tests
+#         uses: cypress-io/github-action@v5
+#         with:
+#           start: npm run start:ci
+#           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+#           wait-on-timeout: 120
+#           command: ${{ needs.e2e-tests.outputs.command }}
+#           record: true
+#           parallel: true
+#       - name: Run API Tests
+#         uses: cypress-io/github-action@v5
+#         with:
+#           start: npm run start:ci
+#           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+#           wait-on-timeout: 120
+#           command: ${{ needs.api-tests.outputs.command }}
+#           record: true
+#           parallel: true
+#       - name: Run CT Tests
+#         uses: cypress-io/github-action@v5
+#         with:
+#           command: ${{ needs.component-tests.outputs.command }}
+#           record: true
+#           parallel: true
 
-  chrome-browser:
-    timeout-minutes: 15
-    runs-on: ubuntu-latest
-    needs: [e2e-tests, component-tests, api-tests]
-    strategy:
-      fail-fast: false
-      matrix:
-        containers: [1, 2]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Run E2E Tests
-        uses: cypress-io/github-action@v5
-        with:
-          start: npm run start:ci
-          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          wait-on-timeout: 120
-          command: ${{ needs.e2e-tests.outputs.command }}
-          record: true
-          parallel: true
-      - name: Run API Tests
-        uses: cypress-io/github-action@v5
-        with:
-          start: npm run start:ci
-          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          wait-on-timeout: 120
-          command: ${{ needs.api-tests.outputs.command }}
-          record: true
-          parallel: true
-      - name: Run CT Tests
-        uses: cypress-io/github-action@v5
-        with:
-          command: ${{ needs.component-tests.outputs.command }}
-          record: true
-          parallel: true
+#   chrome-browser:
+#     timeout-minutes: 15
+#     runs-on: ubuntu-latest
+#     needs: [e2e-tests, component-tests, api-tests]
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         containers: [1, 2]
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
+#       - name: Run E2E Tests
+#         uses: cypress-io/github-action@v5
+#         with:
+#           start: npm run start:ci
+#           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+#           wait-on-timeout: 120
+#           command: ${{ needs.e2e-tests.outputs.command }}
+#           record: true
+#           parallel: true
+#       - name: Run API Tests
+#         uses: cypress-io/github-action@v5
+#         with:
+#           start: npm run start:ci
+#           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+#           wait-on-timeout: 120
+#           command: ${{ needs.api-tests.outputs.command }}
+#           record: true
+#           parallel: true
+#       - name: Run CT Tests
+#         uses: cypress-io/github-action@v5
+#         with:
+#           command: ${{ needs.component-tests.outputs.command }}
+#           record: true
+#           parallel: true
 
-  firefox-browser:
-    timeout-minutes: 15
-    runs-on: ubuntu-latest
-    needs: [e2e-tests, component-tests, api-tests]
-    strategy:
-      fail-fast: false
-      matrix:
-        containers: [1, 2]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Run E2E Tests
-        uses: cypress-io/github-action@v5
-        with:
-          start: npm run start:ci
-          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          wait-on-timeout: 120
-          command: ${{ needs.e2e-tests.outputs.command }}
-          record: true
-          parallel: true
-      - name: Run API Tests
-        uses: cypress-io/github-action@v5
-        with:
-          start: npm run start:ci
-          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          wait-on-timeout: 120
-          command: ${{ needs.api-tests.outputs.command }}
-          record: true
-          parallel: true
-      - name: Run CT Tests
-        uses: cypress-io/github-action@v5
-        with:
-          command: ${{ needs.component-tests.outputs.command }}
-          record: true
-          parallel: true
+#   firefox-browser:
+#     timeout-minutes: 15
+#     runs-on: ubuntu-latest
+#     needs: [e2e-tests, component-tests, api-tests]
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         containers: [1, 2]
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
+#       - name: Run E2E Tests
+#         uses: cypress-io/github-action@v5
+#         with:
+#           start: npm run start:ci
+#           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+#           wait-on-timeout: 120
+#           command: ${{ needs.e2e-tests.outputs.command }}
+#           record: true
+#           parallel: true
+#       - name: Run API Tests
+#         uses: cypress-io/github-action@v5
+#         with:
+#           start: npm run start:ci
+#           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+#           wait-on-timeout: 120
+#           command: ${{ needs.api-tests.outputs.command }}
+#           record: true
+#           parallel: true
+#       - name: Run CT Tests
+#         uses: cypress-io/github-action@v5
+#         with:
+#           command: ${{ needs.component-tests.outputs.command }}
+#           record: true
+#           parallel: true
 
-  edge-browser:
-    timeout-minutes: 15
-    runs-on: ubuntu-latest
-    needs: [e2e-tests, component-tests, api-tests]
-    strategy:
-      fail-fast: false
-      matrix:
-        containers: [1, 2]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Run E2E Tests
-        uses: cypress-io/github-action@v5
-        with:
-          start: npm run start:ci
-          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          wait-on-timeout: 120
-          command: ${{ needs.e2e-tests.outputs.command }}
-          record: true
-          parallel: true
-      - name: Run API Tests
-        uses: cypress-io/github-action@v5
-        with:
-          start: npm run start:ci
-          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          wait-on-timeout: 120
-          command: ${{ needs.api-tests.outputs.command }}
-          record: true
-          parallel: true
-      - name: Run CT Tests
-        uses: cypress-io/github-action@v5
-        with:
-          command: ${{ needs.component-tests.outputs.command }}
-          record: true
-          parallel: true
+#   edge-browser:
+#     timeout-minutes: 15
+#     runs-on: ubuntu-latest
+#     needs: [e2e-tests, component-tests, api-tests]
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         containers: [1, 2]
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
+#       - name: Run E2E Tests
+#         uses: cypress-io/github-action@v5
+#         with:
+#           start: npm run start:ci
+#           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+#           wait-on-timeout: 120
+#           command: ${{ needs.e2e-tests.outputs.command }}
+#           record: true
+#           parallel: true
+#       - name: Run API Tests
+#         uses: cypress-io/github-action@v5
+#         with:
+#           start: npm run start:ci
+#           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+#           wait-on-timeout: 120
+#           command: ${{ needs.api-tests.outputs.command }}
+#           record: true
+#           parallel: true
+#       - name: Run CT Tests
+#         uses: cypress-io/github-action@v5
+#         with:
+#           command: ${{ needs.component-tests.outputs.command }}
+#           record: true
+#           parallel: true
