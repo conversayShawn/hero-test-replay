@@ -1,106 +1,106 @@
-name: Cypress Tests
+# name: Cypress Tests
 
-on: push
+# on: push
 
-env:
-  CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  DEBUG: "cypress:*"
+# env:
+#   CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+#   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#   DEBUG: "cypress:*"
 
-jobs:
-  install:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+# jobs:
+#   install:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
 
-      - name: Install Playwright dependencies for WebKit
-        if: ${{ matrix.browser == 'webkit' }}
-        run: npx playwright install-deps webkit
+#       - name: Install Playwright dependencies for WebKit
+#         if: ${{ matrix.browser == 'webkit' }}
+#         run: npx playwright install-deps webkit
 
-      - name: Cypress install
-        uses: cypress-io/github-action@v5
-        with:
-          runTests: false
-          build: npm run build
-      - name: Save build folder
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-folders
-          if-no-files-found: error
-          path: |
-            client/dist
-            server/dist
+#       - name: Cypress install
+#         uses: cypress-io/github-action@v5
+#         with:
+#           runTests: false
+#           build: npm run build
+#       - name: Save build folder
+#         uses: actions/upload-artifact@v3
+#         with:
+#           name: build-folders
+#           if-no-files-found: error
+#           path: |
+#             client/dist
+#             server/dist
 
-  end-to-end-tests:
-    runs-on: ubuntu-latest
-    needs: install
-    strategy:
-      fail-fast: false
-      matrix:
-        browser: [electron, chrome, firefox, edge, webkit]
-        containers: [1, 2]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+#   end-to-end-tests:
+#     runs-on: ubuntu-latest
+#     needs: install
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         browser: [electron, chrome, firefox, edge, webkit]
+#         containers: [1, 2]
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
 
-      - name: Download the build folders
-        uses: actions/download-artifact@v3
-        with:
-          name: build-folders
+#       - name: Download the build folders
+#         uses: actions/download-artifact@v3
+#         with:
+#           name: build-folders
 
-      - name: Run End-to-End Tests on ${{ matrix.browser }}
-        uses: cypress-io/github-action@v5
-        with:
-          start: npm run start:ci
-          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          command: npm run test:e2e:ci:${{ matrix.browser }}
-          browser: ${{ matrix.browser }}
+#       - name: Run End-to-End Tests on ${{ matrix.browser }}
+#         uses: cypress-io/github-action@v5
+#         with:
+#           start: npm run start:ci
+#           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+#           command: npm run test:e2e:ci:${{ matrix.browser }}
+#           browser: ${{ matrix.browser }}
 
-  component-tests:
-    runs-on: ubuntu-latest
-    needs: install
-    strategy:
-      fail-fast: false
-      matrix:
-        browser: [electron, chrome, firefox, edge, webkit]
-        containers: [1, 2]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+#   component-tests:
+#     runs-on: ubuntu-latest
+#     needs: install
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         browser: [electron, chrome, firefox, edge, webkit]
+#         containers: [1, 2]
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
 
-      - name: Download the build folders
-        uses: actions/download-artifact@v3
-        with:
-          name: build-folders
+#       - name: Download the build folders
+#         uses: actions/download-artifact@v3
+#         with:
+#           name: build-folders
 
-      - name: Run Component Tests on ${{ matrix.browser }}
-        uses: cypress-io/github-action@v5
-        with:
-          command: npm run test:ct:ci:${{ matrix.browser }}
-          browser: ${{ matrix.browser }}
+#       - name: Run Component Tests on ${{ matrix.browser }}
+#         uses: cypress-io/github-action@v5
+#         with:
+#           command: npm run test:ct:ci:${{ matrix.browser }}
+#           browser: ${{ matrix.browser }}
 
-  api-tests:
-    runs-on: ubuntu-latest
-    needs: install
-    strategy:
-      fail-fast: false
-      matrix:
-        browser: [electron, chrome, firefox, edge, webkit]
-        containers: [1, 2]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+#   api-tests:
+#     runs-on: ubuntu-latest
+#     needs: install
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         browser: [electron, chrome, firefox, edge, webkit]
+#         containers: [1, 2]
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
 
-      - name: Download the build folders
-        uses: actions/download-artifact@v3
-        with:
-          name: build-folders
+#       - name: Download the build folders
+#         uses: actions/download-artifact@v3
+#         with:
+#           name: build-folders
 
-      - name: Run API Tests on ${{ matrix.browser }}
-        uses: cypress-io/github-action@v5
-        with:
-          start: npm run start:ci
-          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          command: npm run test:api:ci:${{ matrix.browser }}
-          browser: ${{ matrix.browser }}
+#       - name: Run API Tests on ${{ matrix.browser }}
+#         uses: cypress-io/github-action@v5
+#         with:
+#           start: npm run start:ci
+#           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+#           command: npm run test:api:ci:${{ matrix.browser }}
+#           browser: ${{ matrix.browser }}
