@@ -38,13 +38,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-folders
-      - name: Run E2E Tests
-        uses: cypress-io/github-action@v5
-        with:
-          runTests: false
-          start: npm run start:ci
-          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          command: npm run test:e2e:ci
+    #   - name: Run E2E Tests
+    #     uses: cypress-io/github-action@v5
+    #     with:
+    #       start: npm run start:ci
+    #       wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+    #       command: npm run test:e2e:ci
 
   component-tests:
     runs-on: ubuntu-latest
@@ -56,11 +55,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-folders
-      - name: Run CT Tests
-        uses: cypress-io/github-action@v5
-        with:
-          runTests: false
-          command: npm run test:ct:ci
+    #   - name: Run CT Tests
+    #     uses: cypress-io/github-action@v5
+    #     with:
+    #       command: npm run test:ct:ci
 
   api-tests:
     runs-on: ubuntu-latest
@@ -72,13 +70,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-folders
-      - name: Run API Tests
-        uses: cypress-io/github-action@v5
-        with:
-          runTests: false
-          start: npm run start:ci
-          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          command: npm run test:api:ci
+    #   - name: Run API Tests
+    #     uses: cypress-io/github-action@v5
+    #     with:
+    #       start: npm run start:ci
+    #       wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+    #       command: npm run test:api:ci
 
   electron-browser:
     timeout-minutes: 15
@@ -91,14 +88,36 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Electron Browser Tests
+    #   - name: Electron Browser Tests
+    #     uses: cypress-io/github-action@v5
+    #     with:
+    #       build: npx cypress info
+    #       record: true
+    #       parallel: true
+    #       group: "Electron"
+    #       runTests: true
+      - name: Run E2E Tests
         uses: cypress-io/github-action@v5
         with:
-          build: npx cypress info
+          start: npm run start:ci
+          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+          command: npm run test:e2e:ci:electron
           record: true
           parallel: true
-          group: "Electron"
-          runTests: true
+      - name: Run API Tests
+        uses: cypress-io/github-action@v5
+        with:
+          start: npm run start:ci
+          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+          command: npm run test:api:ci:electron
+          record: true
+          parallel: true
+      - name: Run CT Tests
+        uses: cypress-io/github-action@v5
+        with:
+          command: npm run test:ct:ci:electron
+          record: true
+          parallel: true
 
   chrome-browser:
     timeout-minutes: 15
@@ -111,15 +130,37 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Chrome Browser Tests
+    #   - name: Chrome Browser Tests
+    #     uses: cypress-io/github-action@v5
+    #     with:
+    #       build: npx cypress info
+    #       browser: chrome
+    #       record: true
+    #       parallel: true
+    #       group: "Chrome"
+    #       runTests: true
+      - name: Run E2E Tests
         uses: cypress-io/github-action@v5
         with:
-          build: npx cypress info
-          browser: chrome
+          start: npm run start:ci
+          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+          command: npm run test:e2e:ci:electron
           record: true
           parallel: true
-          group: "Chrome"
-          runTests: true
+      - name: Run API Tests
+        uses: cypress-io/github-action@v5
+        with:
+          start: npm run start:ci
+          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+          command: npm run test:api:ci:electron
+          record: true
+          parallel: true
+      - name: Run CT Tests
+        uses: cypress-io/github-action@v5
+        with:
+          command: npm run test:ct:ci:electron
+          record: true
+          parallel: true
 
   firefox-browser:
     timeout-minutes: 15
@@ -132,15 +173,37 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Firefox Browser Tests
+    #   - name: Firefox Browser Tests
+    #     uses: cypress-io/github-action@v5
+    #     with:
+    #       build: npx cypress info
+    #       browser: firefox
+    #       record: true
+    #       parallel: true
+    #       group: "Firefox"
+    #       runTests: true
+      - name: Run E2E Tests
         uses: cypress-io/github-action@v5
         with:
-          build: npx cypress info
-          browser: firefox
+          start: npm run start:ci
+          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+          command: npm run test:e2e:ci:electron
           record: true
           parallel: true
-          group: "Firefox"
-          runTests: true
+      - name: Run API Tests
+        uses: cypress-io/github-action@v5
+        with:
+          start: npm run start:ci
+          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+          command: npm run test:api:ci:electron
+          record: true
+          parallel: true
+      - name: Run CT Tests
+        uses: cypress-io/github-action@v5
+        with:
+          command: npm run test:ct:ci:electron
+          record: true
+          parallel: true
 
   edge-browser:
     timeout-minutes: 15
@@ -153,15 +216,37 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Edge Browser Tests
+    #   - name: Edge Browser Tests
+    #     uses: cypress-io/github-action@v5
+    #     with:
+    #       build: npx cypress info
+    #       browser: edge
+    #       record: true
+    #       parallel: true
+    #       group: "Edge"
+    #       runTests: true
+      - name: Run E2E Tests
         uses: cypress-io/github-action@v5
         with:
-          build: npx cypress info
-          browser: edge
+          start: npm run start:ci
+          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+          command: npm run test:e2e:ci:electron
           record: true
           parallel: true
-          group: "Edge"
-          runTests: true
+      - name: Run API Tests
+        uses: cypress-io/github-action@v5
+        with:
+          start: npm run start:ci
+          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+          command: npm run test:api:ci:electron
+          record: true
+          parallel: true
+      - name: Run CT Tests
+        uses: cypress-io/github-action@v5
+        with:
+          command: npm run test:ct:ci:electron
+          record: true
+          parallel: true
 
   webkit-browser:
     timeout-minutes: 15
@@ -176,13 +261,35 @@ jobs:
         uses: actions/checkout@v3
       - name: Install Playwright dependencies for WebKit
         run: npx playwright install-deps webkit
-      - name: WebKit Browser Tests
+    #   - name: WebKit Browser Tests
+    #     uses: cypress-io/github-action@v5
+    #     with:
+    #       build: npx cypress info
+    #       browser: webkit
+    #       record: true
+    #       parallel: true
+    #       group: "WebKit"
+    #       config: "video=true,experimentalWebKitSupport=true"
+    #       runTests: true
+      - name: Run E2E Tests
         uses: cypress-io/github-action@v5
         with:
-          build: npx cypress info
-          browser: webkit
+          start: npm run start:ci
+          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+          command: npm run test:e2e:ci:electron
           record: true
           parallel: true
-          group: "WebKit"
-          config: "video=true,experimentalWebKitSupport=true"
-          runTests: true
+      - name: Run API Tests
+        uses: cypress-io/github-action@v5
+        with:
+          start: npm run start:ci
+          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+          command: npm run test:api:ci:electron
+          record: true
+          parallel: true
+      - name: Run CT Tests
+        uses: cypress-io/github-action@v5
+        with:
+          command: npm run test:ct:ci:electron
+          record: true
+          parallel: true
