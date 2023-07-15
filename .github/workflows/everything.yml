@@ -14,6 +14,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
       - name: Cypress install
         uses: cypress-io/github-action@v5
         with:
@@ -34,6 +38,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
       - name: Download the build folders
         uses: actions/download-artifact@v3
         with:
@@ -45,6 +53,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
       - name: Download the build folders
         uses: actions/download-artifact@v3
         with:
@@ -56,6 +68,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
       - name: Download the build folders
         uses: actions/download-artifact@v3
         with:
@@ -72,6 +88,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
       - name: Run E2E Tests
         uses: cypress-io/github-action@v5
         with:
@@ -108,6 +128,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
       - name: Run E2E Tests
         uses: cypress-io/github-action@v5
         with:
@@ -144,6 +168,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
       - name: Run E2E Tests
         uses: cypress-io/github-action@v5
         with:
@@ -180,6 +208,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
       - name: Run E2E Tests
         uses: cypress-io/github-action@v5
         with:
@@ -216,6 +248,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
       - name: Install Playwright dependencies for WebKit
         run: npx playwright install-deps webkit
       - name: Run E2E Tests
