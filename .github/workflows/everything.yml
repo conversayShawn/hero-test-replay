@@ -46,6 +46,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-folders
+      - name: Cypress install
+        uses: cypress-io/github-action@v5
+        with:
+          runTests: false
 
   component-tests:
     runs-on: ubuntu-latest
@@ -61,6 +65,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-folders
+      - name: Cypress install
+        uses: cypress-io/github-action@v5
+        with:
+          runTests: false
 
   api-tests:
     runs-on: ubuntu-latest
@@ -76,6 +84,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-folders
+      - name: Cypress install
+        uses: cypress-io/github-action@v5
+        with:
+          runTests: false
 
   electron-browser:
     timeout-minutes: 15
