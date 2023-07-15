@@ -41,6 +41,7 @@ jobs:
       - name: Run E2E Tests
         uses: cypress-io/github-action@v5
         with:
+          runTests: false
           start: npm run start:ci
           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
           command: npm run test:e2e:ci
@@ -58,6 +59,7 @@ jobs:
       - name: Run CT Tests
         uses: cypress-io/github-action@v5
         with:
+          runTests: false
           command: npm run test:ct:ci
 
   api-tests:
@@ -73,6 +75,7 @@ jobs:
       - name: Run API Tests
         uses: cypress-io/github-action@v5
         with:
+          runTests: false
           start: npm run start:ci
           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
           command: npm run test:api:ci
@@ -95,6 +98,7 @@ jobs:
           record: true
           parallel: true
           group: "Electron"
+          runTests: true
 
   chrome-browser:
     timeout-minutes: 15
@@ -115,6 +119,7 @@ jobs:
           record: true
           parallel: true
           group: "Chrome"
+          runTests: true
 
   firefox-browser:
     timeout-minutes: 15
@@ -135,6 +140,7 @@ jobs:
           record: true
           parallel: true
           group: "Firefox"
+          runTests: true
 
   edge-browser:
     timeout-minutes: 15
@@ -155,6 +161,7 @@ jobs:
           record: true
           parallel: true
           group: "Edge"
+          runTests: true
 
   webkit-browser:
     timeout-minutes: 15
@@ -178,3 +185,4 @@ jobs:
           parallel: true
           group: "WebKit"
           config: "video=true,experimentalWebKitSupport=true"
+          runTests: true
