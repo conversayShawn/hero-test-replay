@@ -10,8 +10,16 @@
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview --host",
-    "test:e2e:ci": "npx cypress run --record --group e2e --parallel",
-    "test:ct:ci": "npx cypress run --component --record --group ct --parallel"
+    "test:e2e:ci:electron": "npx cypress run --record --group e2e --parallel --browser electron",
+    "test:e2e:ci:firefox": "npx cypress run --record --group e2e --parallel --browser firefox",
+    "test:e2e:ci:chrome": "npx cypress run --record --group e2e --parallel --browser chrome",
+    "test:e2e:ci:webkit": "npx cypress run --record --group e2e --parallel --browser webkit --config video=true,experimentalWebKitSupport=true",
+    "test:e2e:ci:edge": "npx cypress run --record --group e2e --parallel --browser edge",
+    "test:ct:ci:electron": "npx cypress run --component --record --group ct --parallel --browser electron",
+    "test:ct:ci:firefox": "npx cypress run --component --record --group ct --parallel --browser firefox",
+    "test:ct:ci:chrome": "npx cypress run --component --record --group ct --parallel --browser chrome",
+    "test:ct:ci:webkit": "npx cypress run --component --record --group ct --parallel --browser webkit --config video=true,experimentalWebKitSupport=true",
+    "test:ct:ci:edge": "npx cypress run --component --record --group ct --parallel --browser edge"
   },
   "dependencies": {
     "@tanstack/react-query": "^4.22.0",
