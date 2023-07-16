@@ -14,6 +14,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.16
+
       - name: Cypress install
         uses: cypress-io/github-action@v5
         with:
@@ -40,48 +45,55 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.16
+
       - name: Download the build folders
         uses: actions/download-artifact@v3
         with:
           name: build-folders
+      
       - name: Run E2E Tests
         uses: cypress-io/github-action@v5
         with:
           start: npm run start:ci
           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
         #   command: npm run test:e2e:ci:electron
-          command-prefix: 'npm --prefix ./client'
+          command-prefix: 'cd ./client && npx'
           browser: chrome
           record: true
           parallel: true
           group: "Electron"
 
-  chrome-browser:
-    timeout-minutes: 15
-    runs-on: ubuntu-latest
-    needs: install
-    strategy:
-      fail-fast: false
-      matrix:
-        containers: [1, 2]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Download the build folders
-        uses: actions/download-artifact@v3
-        with:
-          name: build-folders
-      - name: Run E2E Tests
-        uses: cypress-io/github-action@v5
-        with:
-          start: npm run start:ci
-          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          #   command: npm run test:e2e:ci:electron
-          command-prefix: 'npm --prefix ./client'
-          browser: chrome
-          record: true
-          parallel: true
-          group: "Chrome"
+#   chrome-browser:
+#     timeout-minutes: 15
+#     runs-on: ubuntu-latest
+#     needs: install
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         containers: [1, 2]
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
+#       - name: Download the build folders
+#         uses: actions/download-artifact@v3
+#         with:
+#           name: build-folders
+#       - name: Run E2E Tests
+#         uses: cypress-io/github-action@v5
+#         with:
+#           start: npm run start:ci
+#           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+#           #   command: npm run test:e2e:ci:electron
+#           command-prefix: 'npm --prefix ./client'
+#           browser: chrome
+#           record: true
+#           parallel: true
+#           group: "Chrome"
 
 #   firefox-browser:
 #     timeout-minutes: 15
