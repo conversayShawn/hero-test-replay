@@ -47,29 +47,30 @@ jobs:
       - name: "Testing in Electron"
         uses: cypress-io/github-action@v5
         with:
-          build: npx cypress info
-          record: true
-          parallel: true
-          group: "Electron"
+          runTests: false
+        #   build: npx cypress info
+        #   record: true
+        #   parallel: true
+        #   group: "Electron"
 
       - name: Run E2E Tests
         uses: cypress-io/github-action@v5
         with:
           start: npm run start:ci
           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          command: npm run test:e2e:ci
+          command: npm run test:e2e:ci:electron
       
       - name: Run CT Tests
         uses: cypress-io/github-action@v5
         with:
-          command: npm run test:ct:ci
+          command: npm run test:ct:ci:electron
 
       - name: Run API Tests
         uses: cypress-io/github-action@v5
         with:
           start: npm run start:ci
           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          command: npm run test:api:ci
+          command: npm run test:api:ci:electron
 
 #   chrome-browser:
 #     timeout-minutes: 15
