@@ -184,30 +184,30 @@
 #         uses: actions/setup-node@v3
 #         with:
 #           node-version: 16
-#       - name: Run E2E Tests
-#         uses: cypress-io/github-action@v5
-#         with:
-#           start: npm run start:ci
-#           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-#           wait-on-timeout: 120
-#           command: npm run test:e2e:ci:firefox
-#           record: true
-#           parallel: true
-#       - name: Run API Tests
-#         uses: cypress-io/github-action@v5
-#         with:
-#           start: npm run start:ci
-#           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-#           wait-on-timeout: 120
-#           command: npm run test:api:ci:firefox
-#           record: true
-#           parallel: true
-#       - name: Run CT Tests
-#         uses: cypress-io/github-action@v5
-#         with:
-#           command: npm run test:ct:ci:firefox
-#           record: true
-#           parallel: true
+    #   - name: Run E2E Tests
+    #     uses: cypress-io/github-action@v5
+    #     with:
+    #       start: npm run start:ci
+    #       wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+    #       wait-on-timeout: 120
+    #       command: npm run test:e2e:ci:firefox
+    #       record: true
+    #       parallel: true
+    #   - name: Run API Tests
+    #     uses: cypress-io/github-action@v5
+    #     with:
+    #       start: npm run start:ci
+    #       wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+    #       wait-on-timeout: 120
+    #       command: npm run test:api:ci:firefox
+    #       record: true
+    #       parallel: true
+    #   - name: Run CT Tests
+    #     uses: cypress-io/github-action@v5
+    #     with:
+    #       command: npm run test:ct:ci:firefox
+    #       record: true
+    #       parallel: true
 
 #   edge-browser:
 #     timeout-minutes: 15
