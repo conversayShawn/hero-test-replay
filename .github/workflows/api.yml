@@ -11,7 +11,7 @@ jobs:
   install:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout GitHub Repo
+      - name: Checkout
         uses: actions/checkout@v3
 
       - name: Cypress install
@@ -49,7 +49,12 @@ jobs:
         with:
           start: npm run start:ci
           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          command: npm run test:e2e:ci:electron
+        #   command: npm run test:e2e:ci:electron
+          command-prefix: './client'
+          browser: chrome
+          record: true
+          parallel: true
+          group: "Electron"
 
   chrome-browser:
     timeout-minutes: 15
@@ -71,7 +76,12 @@ jobs:
         with:
           start: npm run start:ci
           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          command: npm run test:e2e:ci:chrome
+          #   command: npm run test:e2e:ci:electron
+          command-prefix: './client'
+          browser: chrome
+          record: true
+          parallel: true
+          group: "Chrome"
 
 #   firefox-browser:
 #     timeout-minutes: 15
