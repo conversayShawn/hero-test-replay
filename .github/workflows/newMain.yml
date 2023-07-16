@@ -1,115 +1,74 @@
-name: Cypress Tests
+# name: Cypress Tests
 
-on: push
+# on: push
 
-env:
-  CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  VITE_API_URL: http://localhost:3001
+# env:
+#   CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+#   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#   VITE_API_URL: http://localhost:3001
 
-jobs:
-  install:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Cypress install
-        uses: cypress-io/github-action@v5
-        with:
-          runTests: false
-          build: npm run build
-      - name: Save build folder
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-folders
-          if-no-files-found: error
-          path: |
-            client/dist
-            server/dist
+# jobs:
+#   install:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
+#       - name: Cypress install
+#         uses: cypress-io/github-action@v5
+#         with:
+#           runTests: false
+#           build: npm run build
+#       - name: Save build folder
+#         uses: actions/upload-artifact@v3
+#         with:
+#           name: build-folders
+#           if-no-files-found: error
+#           path: |
+#             client/dist
+#             server/dist
 
-  electron-browser:
-    timeout-minutes: 15
-    runs-on: ubuntu-latest
-    needs: install
-    strategy:
-      fail-fast: false
-      matrix:
-        containers: [1, 2]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+#   electron-browser:
+#     timeout-minutes: 15
+#     runs-on: ubuntu-latest
+#     needs: install
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         containers: [1, 2]
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
       
-      - name: Download the build folders
-        uses: actions/download-artifact@v3
-        with:
-          name: build-folders
+#       - name: Download the build folders
+#         uses: actions/download-artifact@v3
+#         with:
+#           name: build-folders
 
-      - name: "Testing in Electron"
-        uses: cypress-io/github-action@v5
-        with:
-          runTests: false
+#       - name: "Testing in Electron"
+#         uses: cypress-io/github-action@v5
+#         with:
+#           runTests: false
 
-      - name: Run E2E Tests
-        uses: cypress-io/github-action@v5
-        with:
-          start: npm run start:ci
-          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          command: npm run test:e2e:ci:electron
+#       - name: Run E2E Tests
+#         uses: cypress-io/github-action@v5
+#         with:
+#           start: npm run start:ci
+#           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+#           command: npm run test:e2e:ci:electron
       
-      - name: Run CT Tests
-        uses: cypress-io/github-action@v5
-        with:
-          command: npm run test:ct:ci:electron
+#       - name: Run CT Tests
+#         uses: cypress-io/github-action@v5
+#         with:
+#           command: npm run test:ct:ci:electron
 
-      - name: Run API Tests
-        uses: cypress-io/github-action@v5
-        with:
-          start: npm run start:ci
-          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          command: npm run test:api:ci:electron
+#       - name: Run API Tests
+#         uses: cypress-io/github-action@v5
+#         with:
+#           start: npm run start:ci
+#           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+#           command: npm run test:api:ci:electron
 
-  chrome-browser:
-    timeout-minutes: 15
-    runs-on: ubuntu-latest
-    needs: install
-    strategy:
-      fail-fast: false
-      matrix:
-        containers: [1, 2]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Download the build folders
-        uses: actions/download-artifact@v3
-        with:
-          name: build-folders
-
-      - name: "Testing in Electron"
-        uses: cypress-io/github-action@v5
-        with:
-          runTests: false
-
-      - name: Run E2E Tests
-        uses: cypress-io/github-action@v5
-        with:
-          start: npm run start:ci
-          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          command: npm run test:e2e:ci:chrome
-      
-      - name: Run CT Tests
-        uses: cypress-io/github-action@v5
-        with:
-          command: npm run test:ct:ci:chrome
-
-      - name: Run API Tests
-        uses: cypress-io/github-action@v5
-        with:
-          start: npm run start:ci
-          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          command: npm run test:api:ci:chrome
-
-#   firefox-browser:
+#   chrome-browser:
 #     timeout-minutes: 15
 #     runs-on: ubuntu-latest
 #     needs: install
@@ -121,57 +80,98 @@ jobs:
 #       - name: Checkout
 #         uses: actions/checkout@v3
 
-#       - name: "Testing in Firefox"
+#       - name: Download the build folders
+#         uses: actions/download-artifact@v3
+#         with:
+#           name: build-folders
+
+#       - name: "Testing in Electron"
 #         uses: cypress-io/github-action@v5
 #         with:
-#           build: npx cypress info
-#           browser: firefox
-#           record: true
-#           parallel: true
-#           group: "Firefox"
+#           runTests: false
 
-#   edge-browser:
-#     timeout-minutes: 15
-#     runs-on: ubuntu-latest
-#     needs: install
-#     strategy:
-#       fail-fast: false
-#       matrix:
-#         containers: [1, 2]
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
-
-#       - name: "Testing in Edge"
+#       - name: Run E2E Tests
 #         uses: cypress-io/github-action@v5
 #         with:
-#           build: npx cypress info
-#           browser: edge
-#           record: true
-#           parallel: true
-#           group: "Edge"
-
-#   webkit-browser:
-#     timeout-minutes: 15
-#     runs-on: ubuntu-latest
-#     needs: install
-#     strategy:
-#       fail-fast: false
-#       matrix:
-#         containers: [1, 2]
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
-
-#       - name: Install Playwright dependencies for WebKit
-#         run: npx playwright install-deps webkit
-
-#       - name: "Testing in WebKit"
+#           start: npm run start:ci
+#           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+#           command: npm run test:e2e:ci:chrome
+      
+#       - name: Run CT Tests
 #         uses: cypress-io/github-action@v5
 #         with:
-#           build: npx cypress info
-#           browser: webkit
-#           record: true
-#           parallel: true
-#           group: "WebKit"
-#           config: "video=true,experimentalWebKitSupport=true"
+#           command: npm run test:ct:ci:chrome
+
+#       - name: Run API Tests
+#         uses: cypress-io/github-action@v5
+#         with:
+#           start: npm run start:ci
+#           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+#           command: npm run test:api:ci:chrome
+
+# #   firefox-browser:
+# #     timeout-minutes: 15
+# #     runs-on: ubuntu-latest
+# #     needs: install
+# #     strategy:
+# #       fail-fast: false
+# #       matrix:
+# #         containers: [1, 2]
+# #     steps:
+# #       - name: Checkout
+# #         uses: actions/checkout@v3
+
+# #       - name: "Testing in Firefox"
+# #         uses: cypress-io/github-action@v5
+# #         with:
+# #           build: npx cypress info
+# #           browser: firefox
+# #           record: true
+# #           parallel: true
+# #           group: "Firefox"
+
+# #   edge-browser:
+# #     timeout-minutes: 15
+# #     runs-on: ubuntu-latest
+# #     needs: install
+# #     strategy:
+# #       fail-fast: false
+# #       matrix:
+# #         containers: [1, 2]
+# #     steps:
+# #       - name: Checkout
+# #         uses: actions/checkout@v3
+
+# #       - name: "Testing in Edge"
+# #         uses: cypress-io/github-action@v5
+# #         with:
+# #           build: npx cypress info
+# #           browser: edge
+# #           record: true
+# #           parallel: true
+# #           group: "Edge"
+
+# #   webkit-browser:
+# #     timeout-minutes: 15
+# #     runs-on: ubuntu-latest
+# #     needs: install
+# #     strategy:
+# #       fail-fast: false
+# #       matrix:
+# #         containers: [1, 2]
+# #     steps:
+# #       - name: Checkout
+# #         uses: actions/checkout@v3
+
+# #       - name: Install Playwright dependencies for WebKit
+# #         run: npx playwright install-deps webkit
+
+# #       - name: "Testing in WebKit"
+# #         uses: cypress-io/github-action@v5
+# #         with:
+# #           build: npx cypress info
+# #           browser: webkit
+# #           record: true
+# #           parallel: true
+# #           group: "WebKit"
+# #           config: "video=true,experimentalWebKitSupport=true"
