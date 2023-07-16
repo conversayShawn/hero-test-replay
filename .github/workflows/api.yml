@@ -50,7 +50,7 @@ jobs:
           start: npm run start:ci
           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
         #   command: npm run test:e2e:ci:electron
-          command-prefix: './client'
+          command-prefix: 'npm --prefix ./client'
           browser: chrome
           record: true
           parallel: true
