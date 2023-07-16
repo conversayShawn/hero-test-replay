@@ -14,7 +14,7 @@ jobs:
       - name: Checkout GitHub Repo
         uses: actions/checkout@v3
 
-      - name: Install Cypress Deps
+      - name: Cypress install
         uses: cypress-io/github-action@v5
         with:
           runTests: false
@@ -43,7 +43,7 @@ jobs:
       - name: Download the build folders
         uses: actions/download-artifact@v3
         with:
-          name: Download build-folder
+          name: build-folders
       - name: Run E2E Tests
         uses: cypress-io/github-action@v5
         with:
@@ -65,7 +65,7 @@ jobs:
       - name: Download the build folders
         uses: actions/download-artifact@v3
         with:
-          name: Download build-folder
+          name: build-folders
       - name: Run E2E Tests
         uses: cypress-io/github-action@v5
         with:
@@ -84,7 +84,7 @@ jobs:
 #     steps:
 #       - name: Checkout
 #         uses: actions/checkout@v3
-
+# 
 #       - name: "Testing in Firefox"
 #         uses: cypress-io/github-action@v5
 #         with:
@@ -93,7 +93,7 @@ jobs:
 #           record: true
 #           parallel: true
 #           group: "Firefox"
-
+# 
 #   edge-browser:
 #     timeout-minutes: 15
 #     runs-on: ubuntu-latest
@@ -105,7 +105,7 @@ jobs:
 #     steps:
 #       - name: Checkout
 #         uses: actions/checkout@v3
-
+# 
 #       - name: "Testing in Edge"
 #         uses: cypress-io/github-action@v5
 #         with:
@@ -114,7 +114,7 @@ jobs:
 #           record: true
 #           parallel: true
 #           group: "Edge"
-
+# 
 #   webkit-browser:
 #     timeout-minutes: 15
 #     runs-on: ubuntu-latest
@@ -126,10 +126,10 @@ jobs:
 #     steps:
 #       - name: Checkout
 #         uses: actions/checkout@v3
-
+# 
 #       - name: Install Playwright dependencies for WebKit
 #         run: npx playwright install-deps webkit
-
+# 
 #       - name: "Testing in WebKit"
 #         uses: cypress-io/github-action@v5
 #         with:
