@@ -6,7 +6,7 @@ env:
   VITE_API_URL: http://localhost:3001
   CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  COMMIT_INFO_MESSAGE: ${{ github.event.head_commit.message }} - Electron
+  COMMIT_INFO_MESSAGE: ${{ github.event.head_commit.message }} - Firefox
 
 jobs:
   install:
@@ -40,6 +40,8 @@ jobs:
         run: echo "::set-output name=browser::$(node .github/scripts/get-browser.js)"
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Install Playwright dependencies for WebKit
+        run: npx playwright install-deps webkit
       - name: Download the build folders
         uses: actions/download-artifact@v3
         with:
@@ -49,7 +51,7 @@ jobs:
         with:
           start: npm run start:ci
           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          command: npm run test:e2e:ci:electron
+          command: npm run test:e2e:ci:firefox
   component-tests:
     runs-on: ubuntu-latest
     needs: install
@@ -60,6 +62,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Install Playwright dependencies for WebKit
+        run: npx playwright install-deps webkit
       - name: Download the build folders
         uses: actions/download-artifact@v3
         with:
@@ -67,7 +71,7 @@ jobs:
       - name: Run CT Tests
         uses: cypress-io/github-action@v5
         with:
-          command: npm run test:ct:ci:electron
+          command: npm run test:ct:ci:firefox
   api-tests:
     runs-on: ubuntu-latest
     needs: install
@@ -78,6 +82,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Install Playwright dependencies for WebKit
+        run: npx playwright install-deps webkit
       - name: Download the build folders
         uses: actions/download-artifact@v3
         with:
@@ -87,4 +93,4 @@ jobs:
         with:
           start: npm run start:ci
           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          command: npm run test:api:ci:electron
+          command: npm run test:api:ci:firefox
