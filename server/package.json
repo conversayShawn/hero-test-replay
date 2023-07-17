@@ -19,7 +19,7 @@
     "test:api:ci": "npx cypress run --record --group api --parallel",
     "test:api:ci:electron": "npx cypress run --record --group api --parallel --browser electron",
     "test:api:ci:firefox": "npx cypress run --record --group api --parallel --browser firefox --config video=true",
-    "test:api:ci:firefox:oldVersion": "npx cypress run --record --group api --parallel --browser firefox --config video=true",
+    "test:api:ci:firefox:oldVersion": "npx cypress run --record --group api --parallel --browser firefox --browser-version 93.0 --config video=true",
     "test:api:ci:chrome": "npx cypress run --record --group api --parallel --browser chrome",
     "test:api:ci:webkit": "npx cypress run --record --group api --parallel --browser webkit --config video=true,experimentalWebKitSupport=true",
     "test:api:ci:edge": "npx cypress run --record --group api --parallel --browser edge",
