@@ -6,7 +6,7 @@ env:
   VITE_API_URL: http://localhost:3001
   CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  COMMIT_INFO_MESSAGE: ${{ github.event.head_commit.message }} - Firefox
+  COMMIT_INFO_MESSAGE: ${{ github.event.head_commit.message }} - Webkit
 
 jobs:
   install:
@@ -51,7 +51,7 @@ jobs:
         with:
           start: npm run start:ci
           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          command: npm run test:e2e:ci:firefox
+          command: npm run test:e2e:ci:webkit
   component-tests:
     runs-on: ubuntu-latest
     needs: install
@@ -71,7 +71,7 @@ jobs:
       - name: Run CT Tests
         uses: cypress-io/github-action@v5
         with:
-          command: npm run test:ct:ci:firefox
+          command: npm run test:ct:ci:webkit
   api-tests:
     runs-on: ubuntu-latest
     needs: install
@@ -93,4 +93,4 @@ jobs:
         with:
           start: npm run start:ci
           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          command: npm run test:api:ci:firefox
+          command: npm run test:api:ci:webkit
