@@ -9,7 +9,8 @@ export default defineConfig({
   projectId: 'yrin2w',
   e2e: {
     baseUrl: 'http://localhost:3000',
-    setupNodeEvents(on, config) {
+    setupNodeEvents(cypressOn, config) {
+      const on = require('cypress-on-fix')(cypressOn)
       on('task', {
         createHero,
         deleteHero,
@@ -34,7 +35,8 @@ export default defineConfig({
       framework: 'react',
       bundler: 'vite',
     },
-    setupNodeEvents(on, config) {
+    setupNodeEvents(cypressOn, config) {
+      const on = require('cypress-on-fix')(cypressOn)
       on("after:spec", (spec, results) => {
         if (results && results.video) {
           // Do we have failures for any retry attempts?

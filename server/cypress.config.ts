@@ -11,7 +11,8 @@ export default defineConfig({
     testIsolation: false, //disable to see api results screen
     specPattern: 'cypress/**/*.cy.{js,jsx,ts,tsx}',
     baseUrl: 'http://localhost:3001',
-    setupNodeEvents(on, config) {
+    setupNodeEvents(cypressOn, config) {
+      const on = require('cypress-on-fix')(cypressOn)
       on('task', {
         createHero,
         deleteHero,
