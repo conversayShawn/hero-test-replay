@@ -35,9 +35,6 @@ jobs:
       matrix:
         containers: [1, 2]
     steps:
-      - name: Extract Browser Information
-        id: extract-browser
-        run: echo "::set-output name=browser::$(node .github/scripts/get-browser.js)"
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install Playwright dependencies for WebKit
