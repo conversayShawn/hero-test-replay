@@ -34,8 +34,7 @@ export default defineConfig({
       framework: 'react',
       bundler: 'vite',
     },
-    setupNodeEvents(cypressOn, config) {
-      const on = require('cypress-on-fix')(cypressOn)
+    setupNodeEvents(on, config) {
       on("after:spec", (spec, results) => {
         if (results && results.video) {
           // Do we have failures for any retry attempts?
