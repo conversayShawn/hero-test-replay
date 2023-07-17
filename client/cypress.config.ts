@@ -1,7 +1,7 @@
 import { defineConfig } from "cypress";
 import { createHero, deleteHero } from "./cypress/support/data";
 import fs from "fs";
-import del = require("del");
+const del = require("del");
 
 export default defineConfig({
   retries: {
