@@ -1,6 +1,6 @@
 import { defineConfig } from 'cypress';
 import { createHero, deleteHero } from './cypress/support/data';
-const fs = require("fs");
+import fs from "fs";;
 
 export default defineConfig({
   retries: {
@@ -11,8 +11,7 @@ export default defineConfig({
     testIsolation: false, //disable to see api results screen
     specPattern: 'cypress/**/*.cy.{js,jsx,ts,tsx}',
     baseUrl: 'http://localhost:3001',
-    setupNodeEvents(cypressOn, config) {
-      const on = require('cypress-on-fix')(cypressOn)
+    setupNodeEvents(on, config) {
       on('task', {
         createHero,
         deleteHero,

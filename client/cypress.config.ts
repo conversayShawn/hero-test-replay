@@ -1,6 +1,6 @@
 import { defineConfig } from "cypress";
 import { createHero, deleteHero } from './cypress/support/data';
-const fs = require("fs");
+import fs from "fs";;
 
 export default defineConfig({
   retries: {
@@ -9,8 +9,7 @@ export default defineConfig({
   projectId: 'yrin2w',
   e2e: {
     baseUrl: 'http://localhost:3000',
-    setupNodeEvents(cypressOn, config) {
-      const on = require('cypress-on-fix')(cypressOn)
+    setupNodeEvents(on, config) {
       on('task', {
         createHero,
         deleteHero,
