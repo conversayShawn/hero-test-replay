@@ -6,6 +6,7 @@ env:
   VITE_API_URL: http://localhost:3001
   CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
 
 jobs:
   install:
@@ -13,10 +14,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Set Commit Message
-        id: set-commit-message
-        run: echo "::set-env name=COMMIT_MESSAGE::${{ github.event.head_commit.message }} - Electron"
 
       - name: Cypress install
         uses: cypress-io/github-action@v5
@@ -55,6 +52,8 @@ jobs:
           start: npm run start:ci
           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
           command: npm run test:e2e:ci:electron
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }} - Electron"
 
   component-tests:
     runs-on: ubuntu-latest
@@ -77,6 +76,8 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           command: npm run test:ct:ci:electron
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }} - Electron"
 
   api-tests:
     runs-on: ubuntu-latest
@@ -101,3 +102,5 @@ jobs:
           start: npm run start:ci
           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
           command: npm run test:api:ci:electron
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }} - Electron"
