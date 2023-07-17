@@ -14,8 +14,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Install Playwright dependencies
-        run: npx playwright install-deps
       - name: Cypress install
         uses: cypress-io/github-action@v5
         with:
