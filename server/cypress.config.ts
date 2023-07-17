@@ -6,6 +6,7 @@ export default defineConfig({
   retries: {
     runMode: 2
   },
+  video:true,
   projectId: 'yrin2w',
   e2e: {
     testIsolation: false, //disable to see api results screen

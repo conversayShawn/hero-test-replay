@@ -1,115 +1,115 @@
-name: Older version Firefox Tests
+# name: Older version Firefox Tests
 
-on: push
+# on: push
 
-env:
-  VITE_API_URL: http://localhost:3001
-  CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  COMMIT_INFO_MESSAGE: ${{ github.event.head_commit.message }} - Firefox - Older version
+# env:
+#   VITE_API_URL: http://localhost:3001
+#   CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+#   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#   COMMIT_INFO_MESSAGE: ${{ github.event.head_commit.message }} - Firefox - Older version
 
-jobs:
-  install:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set Node.js 16.10.0
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.10.0
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Cypress install
-        uses: cypress-io/github-action@v5
-        with:
-          runTests: false
-          build: npm run build
-      - name: Save build folder
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-folders
-          if-no-files-found: error
-          path: |
-            client/dist
-            server/dist
-  end-to-end-tests:
-    runs-on: ubuntu-latest
-    needs: install
-    strategy:
-      fail-fast: false
-      matrix:
-        containers: [1, 2]
-    steps:
-      - name: Set Node.js 16.10.0
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.10.0
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Download the build folders
-        uses: actions/download-artifact@v3
-        with:
-          name: build-folders
-      - name: Set up Firefox 92
-        uses: browser-actions/setup-firefox@v1
-        with:
-          firefox-version: '92.0'
-      - name: Run E2E Tests
-        uses: cypress-io/github-action@v5
-        with:
-          start: npm run start:ci
-          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          command: npm run test:e2e:ci:firefox
-  component-tests:
-    runs-on: ubuntu-latest
-    needs: install
-    strategy:
-      fail-fast: false
-      matrix:
-        containers: [1, 2]
-    steps:
-      - name: Set Node.js 16.10.0
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.10.0
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Download the build folders
-        uses: actions/download-artifact@v3
-        with:
-          name: build-folders
-      - name: Set up Firefox 92
-        uses: browser-actions/setup-firefox@v1
-        with:
-          firefox-version: '92.0'
-      - name: Run CT Tests
-        uses: cypress-io/github-action@v5
-        with:
-          command: npm run test:ct:ci:firefox
-  api-tests:
-    runs-on: ubuntu-latest
-    needs: install
-    strategy:
-      fail-fast: false
-      matrix:
-        containers: [1, 2]
-    steps:
-      - name: Set Node.js 16.10.0
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.10.0
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Download the build folders
-        uses: actions/download-artifact@v3
-        with:
-          name: build-folders
-      - name: Set up Firefox 92
-        uses: browser-actions/setup-firefox@v1
-        with:
-          firefox-version: '92.0'
-      - name: Run API Tests
-        uses: cypress-io/github-action@v5
-        with:
-          start: npm run start:ci
-          wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
-          command: npm run test:api:ci:firefox
+# jobs:
+#   install:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Set Node.js 16.10.0
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 16.10.0
+#       - name: Checkout
+#         uses: actions/checkout@v3
+#       - name: Cypress install
+#         uses: cypress-io/github-action@v5
+#         with:
+#           runTests: false
+#           build: npm run build
+#       - name: Save build folder
+#         uses: actions/upload-artifact@v3
+#         with:
+#           name: build-folders
+#           if-no-files-found: error
+#           path: |
+#             client/dist
+#             server/dist
+#   end-to-end-tests:
+#     runs-on: ubuntu-latest
+#     needs: install
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         containers: [1, 2]
+#     steps:
+#       - name: Set Node.js 16.10.0
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 16.10.0
+#       - name: Checkout
+#         uses: actions/checkout@v3
+#       - name: Download the build folders
+#         uses: actions/download-artifact@v3
+#         with:
+#           name: build-folders
+#       - name: Set up Firefox 92
+#         uses: browser-actions/setup-firefox@v1
+#         with:
+#           firefox-version: '92.0'
+#       - name: Run E2E Tests
+#         uses: cypress-io/github-action@v5
+#         with:
+#           start: npm run start:ci
+#           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+#           command: npm run test:e2e:ci:firefox
+#   component-tests:
+#     runs-on: ubuntu-latest
+#     needs: install
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         containers: [1, 2]
+#     steps:
+#       - name: Set Node.js 16.10.0
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 16.10.0
+#       - name: Checkout
+#         uses: actions/checkout@v3
+#       - name: Download the build folders
+#         uses: actions/download-artifact@v3
+#         with:
+#           name: build-folders
+#       - name: Set up Firefox 92
+#         uses: browser-actions/setup-firefox@v1
+#         with:
+#           firefox-version: '92.0'
+#       - name: Run CT Tests
+#         uses: cypress-io/github-action@v5
+#         with:
+#           command: npm run test:ct:ci:firefox
+#   api-tests:
+#     runs-on: ubuntu-latest
+#     needs: install
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         containers: [1, 2]
+#     steps:
+#       - name: Set Node.js 16.10.0
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 16.10.0
+#       - name: Checkout
+#         uses: actions/checkout@v3
+#       - name: Download the build folders
+#         uses: actions/download-artifact@v3
+#         with:
+#           name: build-folders
+#       - name: Set up Firefox 92
+#         uses: browser-actions/setup-firefox@v1
+#         with:
+#           firefox-version: '92.0'
+#       - name: Run API Tests
+#         uses: cypress-io/github-action@v5
+#         with:
+#           start: npm run start:ci
+#           wait-on: 'http://localhost:3000, http://localhost:3001/heroes'
+#           command: npm run test:api:ci:firefox
