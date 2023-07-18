@@ -27,7 +27,6 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^4.22.0",
-    "del": "^7.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.41.5",
@@ -40,7 +39,6 @@
     "@vitejs/plugin-react": "^3.0.0",
     "autoprefixer": "^10.4.13",
     "cypress": "https://cdn.cypress.io/beta/npm/13.0.0/darwin-arm64/release/13.0.0-d2058a3e002e9f565ba67b5effc20b64defe0157/cypress.tgz",
-    "cypress-on-fix": "^1.0.2",
     "eslint": "^8.42.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.1",
