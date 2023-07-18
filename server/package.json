@@ -58,7 +58,7 @@
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
-    "cypress": "^12.17.1",
+    "cypress": "https://cdn.cypress.io/beta/npm/13.0.0/darwin-arm64/release/13.0.0-d2058a3e002e9f565ba67b5effc20b64defe0157/cypress.tgz",
     "cypress-plugin-api": "^2.9.1",
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.3.0",
