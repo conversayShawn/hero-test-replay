@@ -1,8 +1,6 @@
 import { defineConfig } from 'cypress';
 import { createHero, deleteHero } from './cypress/support/data';
 import fs from "fs";;
-const del = require("del");
-
 
 export default defineConfig({
   retries: {
@@ -19,26 +17,15 @@ export default defineConfig({
         createHero,
         deleteHero,
       });
-      // on("after:spec", (spec, results) => {
-      //   if (results && results.video) {
-      //     // Do we have failures for any retry attempts?
-      //     const failures = results.tests.some((test) =>
-      //       test.attempts.some((attempt) => attempt.state === "failed")
-      //     );
-      //     if (!failures) {
-      //       // delete the video if the spec passed and no tests retried
-      //       fs.unlinkSync(results.video);
-      //     }
-      //   }
-      // });
-      on("after:spec", async (spec, results) => {
+      on("after:spec", (spec, results) => {
         if (results && results.video) {
-          const failures = results.tests?.some(test =>
-            test.attempts.some(attempt => attempt?.state === "failed")
+          // Do we have failures for any retry attempts?
+          const failures = results.tests.some((test) =>
+            test.attempts.some((attempt) => attempt.state === "failed")
           );
           if (!failures) {
             // delete the video if the spec passed and no tests retried
-            return del(results.video);
+            fs.unlinkSync(results.video);
           }
         }
       });
