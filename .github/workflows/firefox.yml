@@ -11,7 +11,7 @@ env:
 jobs:
   install:
     runs-on: ubuntu-latest
-    container: cypress/included:12.17.1
+    container: cypress/included:cypress-13.0.0-node-20.5.0-chrome-114.0.5735.133-1-ff-114.0.2-edge-114.0.1823.51-1
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -30,7 +30,7 @@ jobs:
             server/dist  
   end-to-end-tests:
     runs-on: ubuntu-latest
-    container: cypress/included:12.17.1
+    container: cypress/included:cypress-13.0.0-node-20.5.0-chrome-114.0.5735.133-1-ff-114.0.2-edge-114.0.1823.51-1
     needs: install
     strategy:
       fail-fast: false
@@ -51,7 +51,7 @@ jobs:
           command: npm run test:e2e:ci:firefox
   component-tests:
     runs-on: ubuntu-latest
-    container: cypress/included:12.17.1
+    container: cypress/included:cypress-13.0.0-node-20.5.0-chrome-114.0.5735.133-1-ff-114.0.2-edge-114.0.1823.51-1
     needs: install
     strategy:
       fail-fast: false
@@ -70,7 +70,7 @@ jobs:
           command: npm run test:ct:ci:firefox
   api-tests:
     runs-on: ubuntu-latest
-    container: cypress/included:12.17.1
+    container: cypress/included:cypress-13.0.0-node-20.5.0-chrome-114.0.5735.133-1-ff-114.0.2-edge-114.0.1823.51-1
     needs: install
     strategy:
       fail-fast: false
